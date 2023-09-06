@@ -1,1 +1,77 @@
+% ==================================================
+% SECCIÓN 1: CONFIGURACIÓN E IMPORTACIONES
+% ==================================================
 
+% Configurar de documento.
+\documentclass[11pt]{article}
+\usepackage[left=20mm,right=20mm,top=20mm,bottom=20mm,footskip=16mm]{geometry}
+%\setlength{\parindent}{0cm}
+
+% Importar los paquetes.
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm, amscd}
+\usepackage{mathrsfs}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+\usepackage{float}
+
+% Crear encabezado de las páginas.
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{Flujo en Redes}}
+\rhead{\textbf{Universidad de los Andes}}
+\cfoot{\thepage}
+
+
+% ==================================================
+% SECCIÓN 2: PORTADA
+% ==================================================
+
+% Sentencia de inicio del documento.
+\begin{document}
+
+% Crear la portada.
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+            
+        \Huge
+        \textbf{Entrega 1: Introducción\\Proyecto del Problema de Reconfiguración}
+            
+        \vspace{0.5cm}
+        \LARGE
+        IIND-4115
+            
+        \vspace{4.5cm}
+            
+        \textbf{José Nicolás Cárdenas Trujillo} \\ j.cardenast - 201922006
+        
+        \textbf{\\Grace Natalia Téllez Barbosa}\\ gn.tellez - 201617857
+
+            
+        \vfill
+            
+        \Large
+        Departamento de Ingeniería Industrial\\
+        Universidad de los Andes\\
+        Bogotá D.C., Colombia\\
+        2023-02
+            
+    \end{center}
+\end{titlepage}
+
+
+% ==================================================
+% SECCIÓN 3: CONTEXTO Y ANTECEDENTES
+% ==================================================
+
+\section{Contexo y antecedentes.}
+
+
+
+
+
+% Sentencia de fin del documento.
+\end{document}
