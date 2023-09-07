@@ -3,11 +3,12 @@
 % ==================================================
 
 % Configurar de documento.
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
 \usepackage[left=20mm,right=20mm,top=20mm,bottom=20mm,footskip=16mm]{geometry}
 %\setlength{\parindent}{0cm}
 
 % Importar los paquetes.
+\usepackage{hyperref} % Hipervínculos.
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm, amscd}
 \usepackage{mathrsfs}
@@ -69,8 +70,21 @@
 
 \section{Contexo y antecedentes.}
 
+Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante) \textbf{DECIR CUÁNTOS NOS O MÁS INFORMACIÓN BÁSICA ADICIONAL.}. Por lo tanto, es de vital importancia tener al menos una idea general de qué son estos sistemas y cómo funcionan.
+
+Como explica Thomas Allen Short \cite{short2020}, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos sistemas constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
 
 
+% ==================================================
+% SECCIÓN DE REFERENCIAS
+% ==================================================
+
+\section*{Bibliografía y referencias.}
+
+\setlength{\parindent}{-1em} % Adjust the indentation as needed
+\setlength{\leftskip}{1em}
+\label{short2020}
+Short, T. A. (2020). \textit{Electric Power Distribution Handbook}. Power Publishing.
 
 
 % Sentencia de fin del documento.
