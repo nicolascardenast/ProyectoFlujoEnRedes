@@ -9,7 +9,7 @@
 
 % Importar los paquetes.
 \usepackage{hyperref} % Hipervínculos.
-
+\usepackage{enumitem} % Lista de referencias.
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm, amscd}
 \usepackage{mathrsfs}
@@ -81,7 +81,7 @@ Por último, es necesario considerar un aspecto clave sobre el SDEE que se traba
 
 Considerando todo este contexto, ahora es posible comprender el problema. Dado que la topología radial original del SDEE puede modificarse mediante el uso de estos interruptores de enlace, el problema consiste en encontrar la configuración radial que optimice cierto índice de rendimiento (que se explicará más adelante en la sección \textbf{NOMBRE DE LA SECCIÓN}). \par
 
-Este es un problema de alta complejidad, por lo que es natural preguntarse cuál es la importanca que este tiene actualmente. 
+Este es un problema de alta complejidad, por lo que es natural preguntarse cuál es la importancia que este tiene actualmente. 
 
 
 
@@ -90,11 +90,13 @@ Este es un problema de alta complejidad, por lo que es natural preguntarse cuál
 % ==================================================
 
 \section*{Bibliografía y referencias.}
-\setlength{\parindent}{-1em}
-\setlength{\leftskip}{1em}
+\begin{enumerate}[label={[{\arabic*}]}]
+    \item \label{ref_1} Short, T. A. (2003). \textit{Electric Power Distribution Handbook}. Power Publishing.
+    \item \label{ref_2} Verma, E. P. (2016). \textit{Mesh Interconnection Network Definition, Advantages, Disadvantages}.\ YuvaYana. https://er.yuvayana.org/mesh-interconnection-network-definition-advantages\\disadvantages/
+\end{enumerate}
 
-\label{ref_1} [1] Short, T. A. (2003). \textit{Electric Power Distribution Handbook}. Power Publishing.
-\label{ref_2} [2] Verma, E. P. (2016). \textit{Mesh Interconnection Network Definition, Advantages, Disadvantages}. YuvaYana. https://er.yuvayana.org/mesh-interconnection-network-definition-advantages-disadvantages/
+
+
 
 
 % Sentencia de fin del documento.
