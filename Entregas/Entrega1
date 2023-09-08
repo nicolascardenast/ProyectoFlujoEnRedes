@@ -9,6 +9,7 @@
 
 % Importar los paquetes.
 \usepackage{hyperref} % Hipervínculos.
+
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm, amscd}
 \usepackage{mathrsfs}
@@ -70,9 +71,18 @@
 
 \section{Contexo y antecedentes.}
 
-Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante) \textbf{DECIR CUÁNTOS NOS O MÁS INFORMACIÓN BÁSICA ADICIONAL.}. Por lo tanto, es de vital importancia tener al menos una idea general de qué son estos sistemas y cómo funcionan.
+Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante) \textbf{DECIR CUÁNTOS NODOS O MÁS INFORMACIÓN RELEVANTE}. Por lo tanto, es de vital importancia tener al menos una idea general de lo que son estos sistemas y de cómo funcionan.
 
-Como explica Thomas Allen Short \cite{short2020}, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos sistemas constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
+Como explica Thomas Allen Short (2003) $^{[\ref{ref_1}]}$, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
+
+También es importante considerar que un SDEE se configura como una red mallada interconectada. En primer lugar, una malla es una red en la cual cada elemento está conectado con todos los demás. Por lo tanto, una red mallada interconectada consiste en un conjunto de mallas que están interconectadas de tal manera que se forma una red más extensa $^{[\ref{ref_2}]}$. \par
+
+Por último, es necesario considerar un aspecto clave sobre el SDEE que se trabajará: este funciona con una topología radial. En el contexto de los SDEE, una topología radial es aquella en la que la energía eléctrica fluye en una sola dirección. De manera general (y como se aplica en este caso), la energía se origina en una subestación y se distribuye a varios clientes. Como explica Short (2003) $^{[\ref{ref_1}]}$, estas topologías presentan una serie de ventajas, a saber: facilitan la protección contra flujos dañinos, reducen el costo, son más fáciles de predecir y ofrecen mayor facilidad para el control del voltaje. Según Short, en estas topologías existen ciertos interruptores de enlace que suelen utilizarse para corregir rápidamente flujos dañinos. Estos suelen ser manipulados de forma manual, pero también existen sistemas con interruptores automatizados que realizan estas operaciones de manera automática. \par
+
+Considerando todo este contexto, ahora es posible comprender el problema. Dado que la topología radial original del SDEE puede modificarse mediante el uso de estos interruptores de enlace, el problema consiste en encontrar la configuración radial que optimice cierto índice de rendimiento (que se explicará más adelante en la sección \textbf{NOMBRE DE LA SECCIÓN}). \par
+
+Este es un problema de alta complejidad, por lo que es natural preguntarse cuál es la importanca que este tiene actualmente. 
+
 
 
 % ==================================================
@@ -80,11 +90,11 @@ Como explica Thomas Allen Short \cite{short2020}, los sistemas de distribución 
 % ==================================================
 
 \section*{Bibliografía y referencias.}
-
-\setlength{\parindent}{-1em} % Adjust the indentation as needed
+\setlength{\parindent}{-1em}
 \setlength{\leftskip}{1em}
-\label{short2020}
-Short, T. A. (2020). \textit{Electric Power Distribution Handbook}. Power Publishing.
+
+\label{ref_1} [1] Short, T. A. (2003). \textit{Electric Power Distribution Handbook}. Power Publishing.
+\label{ref_2} [2] Verma, E. P. (2016). \textit{Mesh Interconnection Network Definition, Advantages, Disadvantages}. YuvaYana. https://er.yuvayana.org/mesh-interconnection-network-definition-advantages-disadvantages/
 
 
 % Sentencia de fin del documento.
