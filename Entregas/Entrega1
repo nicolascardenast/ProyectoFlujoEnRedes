@@ -161,7 +161,7 @@ Debido a que hay restricciones con varias variables de decisión al cuadrado, as
 % ==================================================
 
 \section{Importancia y relevancia.}
-La gestión eficiente de los SDEE es de suma importancia en un mundo donde la automatización avanzada y las tecnologías de redes inteligentes están en constante evolución. Según Borges et al. (2014) $^{\ref{ref_3}}$, el problema de reconfiguración es particularmente relevante en la actualidad, dado que estas tecnologías se vuelven más accesibles para las empresas de distribución. Un aspecto fundamental en la operación de los SDEE es la planificación adecuada. Como señalan Lavorato et al. Lavorato et al. (2012) $^{\ref{ref_4}}$, la mayoría de los SDEE operan con una topología radial por razones técnicas fundamentales. Esta topología facilita la coordinación y protección del sistema, al tiempo que reduce la corriente de cortocircuito, mejorando la seguridad y la eficiencia operativa. Es esencial que estos sistemas sean planificados adecuadamente para garantizar su funcionamiento eficiente y confiable. \par
+La gestión eficiente de los SDEE es de suma importancia en un mundo donde la automatización avanzada y las tecnologías de redes inteligentes están en constante evolución. Según Borges et al. (2014) $^{\ref{ref_3}}$, el problema de reconfiguración es particularmente relevante en la actualidad, dado que estas tecnologías se vuelven más accesibles para las empresas de distribución. Un aspecto fundamental en la operación de los SDEE es la planificación adecuada. Como señalan Lavorato et al. (2012) $^{\ref{ref_4}}$, la mayoría de los SDEE operan con una topología radial por razones técnicas fundamentales. Esta topología facilita la coordinación y protección del sistema, al tiempo que reduce la corriente de cortocircuito, mejorando la seguridad y la eficiencia operativa. Es esencial que estos sistemas sean planificados adecuadamente para garantizar su funcionamiento eficiente y confiable. \par
 
 Por otro lado, los beneficios de la reconfiguración de redes en SDEE, como lo destaca Hernández (2013)$^{\ref{ref_5}}$, son notables tanto desde el punto de vista técnico como económico. Estos beneficios incluyen la reducción de pérdidas de energía y potencia, el ahorro en kilovatios-hora comprados a empresas generadoras, la disminución de la demanda pico de potencia y la prolongación de la vida útil de los equipos de distribución. Estos resultados contribuyen a la eficiencia operativa y al ahorro de costos. Del mismo modo, Mon (2014)$^{\ref{ref_6}}$ señala que muchos sistemas de distribución de energía eléctrica enfrentan problemas como regulación de tensión deficiente, factor de potencia bajo, pérdidas elevadas y sobrecarga, lo que afecta la fiabilidad en la continuidad del suministro. Para abordar estos desafíos, es imperativo mejorar el funcionamiento de los SDEE, lo que incluye la reducción de pérdidas, la mejora de la regulación de la tensión y la optimización general. \par
 
@@ -169,17 +169,17 @@ Para resolver eficazmente estos problemas y minimizar las pérdidas de potencia,
 
 
 % ==================================================
-% SECCIÓN 6: OBJETIVOS DEL PROYECTO
+% SECCIÓN 6: OBJETIVOS Y EXPECTATIVAS
 % ==================================================
 
-\section{Objetivos del proyecto.}
+\section{Objetivos y expectativas del proyecto.}
 \subsection*{Objetivo general.}
 El objetivo principal de este proyecto es construir una configuración óptima para el Sistema de Distribución de Energía (SDEE) con el fin de minimizar los costos asociados a las pérdidas de energía activa en el sistema, lo que a su vez se traducirá en ahorros económicos y una reducción importante del impacto ambiental. El enfoque de optimización que se utilizará es la reconfiguración de la red (RN), una técnica fundamental que se ha demostrado efectiva en la mejora de la eficiencia operativa de los SDEE.
 
 Además de este propósito central, se tienen varios objetivos específicos interrelacionados:
 \begin{enumerate}
-    \item Lograr una topología de red equilibrada que asegure una distribución de carga uniforme para reducir el riesgo de sobrecargas.
-    \item Minimizar posibles interrupciones en el suministro eléctrico y mantener niveles de tensión estables y óptimos en toda la red mediante el desarrollo de controles efectivos.
+    \item Lograr una topología de red equilibrada que asegure una distribución de carga uniforme para reducir el riesgo de sobrecargas y minimizar posibles interrupciones en el suministro eléctrico.
+    \item Desarrollar controles efectivos para mantener niveles de tensión estables y óptimos en toda la red.
 \end{enumerate}
 
 \subsection*{Objetivos específicos.}
@@ -188,6 +188,9 @@ Además de este propósito central, se tienen varios objetivos específicos inte
     \item Desarrollar una formulación matemática sólida y precisa que permita la optimización de una mejor configuración para el SDEE.
     \item Realizar pruebas con datos reales de SDEE para validar la eficacia de la configuración óptima propuesta en comparación con el modelo de referencia, fortaleciendo así la aplicabilidad práctica de las soluciones.
 \end{enumerate}
+
+\subsection*{Expectativas.}
+Este proyecto aborda una interesante oportunidad, que se refiere a una cuestión técnica y financiera muy pertinente. Al reducir los costos y garantizar un suministro constante de electricidad, se anticipa que las soluciones propuestas tendrán un impacto significativo en la sostenibilidad y eficiencia de los SDEE, beneficiando tanto a las empresas de distribución como a los usuarios finales. El énfasis en la reconfiguración de la red (RN) y el uso de un modelo matemático sólido prometen ayudar al sector energético a mejorar su eficacia y sostenibilidad en el futuro.
 
 
 % ==================================================
