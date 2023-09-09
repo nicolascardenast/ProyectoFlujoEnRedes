@@ -10,6 +10,7 @@
 % Importar los paquetes.
 \usepackage{hyperref} % Hipervínculos.
 \usepackage{enumitem} % Lista de referencias.
+\usepackage{amsmath} % Para definir las variables de decisión.
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm, amscd}
 \usepackage{mathrsfs}
@@ -18,6 +19,10 @@
 \usepackage{fancyvrb}
 \usepackage{graphicx}
 \usepackage{float}
+
+% Definiciones.
+\newlist{parenenum}{enumerate}{1}
+\setlist[parenenum,1]{label=(\arabic*)}
 
 % Crear encabezado de las páginas.
 \pagestyle{fancy}
@@ -50,7 +55,7 @@
             
         \textbf{José Nicolás Cárdenas Trujillo} \\ j.cardenast - 201922006
         
-        \textbf{\\Grace Natalia Téllez Barbosa}\\ gn.tellez - 201617857
+        \textbf{\\Karen Dayana Culma Ramírez}\\ kd.culma - 201817546
 
             
         \vfill
@@ -71,28 +76,144 @@
 
 \section{Contexo y antecedentes.}
 
-Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante) \textbf{DECIR CUÁNTOS NODOS O MÁS INFORMACIÓN RELEVANTE}. Por lo tanto, es de vital importancia tener al menos una idea general de lo que son estos sistemas y de cómo funcionan.
+Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante). Por lo tanto, es de vital importancia tener al menos una idea general de lo que son estos sistemas y de cómo funcionan.
 
-Como explica Thomas Allen Short (2003) $^{[\ref{ref_1}]}$, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
+Como explica Thomas Allen Short (2003) $^{\ref{ref_1}}$, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
 
-También es importante considerar que un SDEE se configura como una red mallada interconectada. En primer lugar, una malla es una red en la cual cada elemento está conectado con todos los demás. Por lo tanto, una red mallada interconectada consiste en un conjunto de mallas que están interconectadas de tal manera que se forma una red más extensa $^{[\ref{ref_2}]}$. \par
+También es importante considerar que un SDEE se configura como una red mallada interconectada. En primer lugar, una malla es una red en la cual cada elemento está conectado con todos los demás. Por lo tanto, una red mallada interconectada consiste en un conjunto de mallas que están interconectadas de tal manera que se forma una red más extensa $^{\ref{ref_2}}$. \par
 
-Por último, es necesario considerar un aspecto clave sobre el SDEE que se trabajará: este funciona con una topología radial. En el contexto de los SDEE, una topología radial es aquella en la que la energía eléctrica fluye en una sola dirección. De manera general (y como se aplica en este caso), la energía se origina en una subestación y se distribuye a varios clientes. Como explica Short (2003) $^{[\ref{ref_1}]}$, estas topologías presentan una serie de ventajas, a saber: facilitan la protección contra flujos dañinos, reducen el costo, son más fáciles de predecir y ofrecen mayor facilidad para el control del voltaje. Según Short, en estas topologías existen ciertos interruptores de enlace que suelen utilizarse para corregir rápidamente flujos dañinos. Estos suelen ser manipulados de forma manual, pero también existen sistemas con interruptores automatizados que realizan estas operaciones de manera automática. \par
+Por último, es necesario considerar un aspecto clave sobre el SDEE que se trabajará: este funciona con una topología radial. En el contexto de los SDEE, una topología radial es aquella en la que la energía eléctrica fluye en una sola dirección. De manera general (y como se aplica en este caso), la energía se origina en una subestación y se distribuye a varios clientes. Como explica Short $^{\ref{ref_1}}$, estas topologías presentan una serie de ventajas, a saber: facilitan la protección contra flujos dañinos, reducen el costo, son más fáciles de predecir y ofrecen mayor facilidad para el control del voltaje. En estas topologías existen ciertos interruptores de enlace que suelen utilizarse para corregir rápidamente flujos dañinos. Estos suelen ser manipulados de forma manual, pero también existen sistemas con interruptores automatizados que realizan estas operaciones de manera automática. \par
 
-Considerando todo este contexto, ahora es posible comprender el problema. Dado que la topología radial original del SDEE puede modificarse mediante el uso de estos interruptores de enlace, el problema consiste en encontrar la configuración radial que optimice cierto índice de rendimiento (que se explicará más adelante en la sección \textbf{NOMBRE DE LA SECCIÓN}). \par
+Considerando todo este contexto, ahora es posible comprender el problema. Dado que la topología radial original del SDEE puede modificarse mediante el uso de estos interruptores de enlace, el problema consiste en encontrar la configuración radial que optimice cierto índice de rendimiento (que se explicará más adelante). Particularmente, se quieren minimizar pérdidas. \par
 
-Este es un problema de alta complejidad, por lo que es natural preguntarse cuál es la importancia que este tiene actualmente. 
+Este es un problema de alta complejidad, lo que suscita preguntas sobre su importancia y relevancia en la actualidad. En la sección 3 de este documento se proporcionará una explicación detallada de la relevancia de este problema. En términos generales, la gestión eficiente de los Sistemas de Distribución de Energía Eléctrica (SDEE) es fundamental en un mundo con tecnologías de redes inteligentes en constante evolución. La reconfiguración de redes en los SDEE se destaca como una técnica clave para mejorar la eficiencia operativa, reducir las pérdidas de energía, ahorrar costos y abordar desafíos técnicos y económicos, como la regulación de tensión deficiente y las pérdidas elevadas. Entre las técnicas utilizadas, la reconfiguración de red (RN) se considera especialmente efectiva y rentable.
 
+\subsubsection*{Algunas definiciones.}
+Antes de continuar, puede ser útil considerar las siguientes definiciones de algunos fenómenos del problema. Estos pertenecen a la rama de la ingeniería de sistemas de potencia. Sin embargo, dado que el objetivo del proyecto es enfocarse en la parte de optimización del problema, estas definiciones serán muy superficiales y solo servirán para tener una pequeña intuición sobre los fenómenos físicos con los que se lidiará. \par
+
+El voltaje puede entenderse como la fuerza que impulsa la electricidad al moverse por cables y aparatos electrónicos, similar a la fuerza que impulsa el agua en una manguera. La potencia activa es el fenómeno físico que explica cómo se convierte la electricidad en acción, como el motor de un automóvil. La potencia reactiva es la parte de la electricidad que contribuye al buen funcionamiento de las cosas. La corriente se refiere al flujo de electrones que transporta electricidad y hace que las cosas funcionen. Finalmente, la resistencia limita la corriente en circuitos de corriente continua y corriente alterna, y la reactancia se aplica específicamente a circuitos de corriente alterna y se relaciona con el efecto de almacenamiento de energía en inductores y condensadores.
 
 
 % ==================================================
-% SECCIÓN DE REFERENCIAS
+% SECCIÓN 4: DEFINICIÓN DEL PROBLEMA
+% ==================================================
+
+\section{Definición del problema.}
+Para plantear una definición formal y rigurosa del problema se usó el artículo de Borges et al (2014). $^{\ref{ref_3}}$
+
+\subsection*{Conjuntos.}
+\begin{itemize}
+    \item $\Omega_b$: conjunto de nodos.
+    \item $\Omega_l$: conjunto de arcos.
+    \item $T$: conjunto de períodos de tiempo.
+\end{itemize}
+
+\subsection*{Parámetros.}
+\begin{itemize}
+    \item $P_{i}^D \in \mathbb{R}$: demanda de potencia activa en el nodo $i$ en el período $t$ (kW).
+    \item $Q_{i}^D \in \mathbb{R}$: demanda de potencia reactiva en el nodo $i$ (KVAr).
+    \item $R_{ij} \in \mathbb{R}$: resistencia del arco  $ij$ ($\Omega$).
+    \item $X_{ij} \in \mathbb{R}$: reactancia del arco  $ij$ ($\Omega$).
+    \item $Z_{ij} \in \mathbb{R}$: impedancia del arco  $ij$ ($\Omega$).
+    \item $\underline{V} \in \mathbb{R}$: voltaje mínimo (kV).
+    \item $\overline{V} \in \mathbb{R}$: voltaje máximo (kV).
+    \item $\overline{I}_{ij} \in \mathbb{R}$: máxima corriente del arco $ij$ (A).
+\end{itemize}
+
+\subsection*{Función objetivo.}
+Se quiere minimizar la pérdida de potencia activa del SDEE:
+\begin{equation*}
+    \min \sum_{ij \in \Omega_l} \sum_{t \in T} R_{ij} I_{ij,t}^{sqr}.
+\end{equation*}
+
+\subsection*{Variables de decisión.}
+\begin{itemize}
+    \item $P_{ij,t} \in \mathbb{R}$: flujo de potencia activa en el arco  $ij$ en el período $t$.
+    \item $Q_{ij,t} \in \mathbb{R}$: flujo de potencia reactiva en el arco $ij$ en el período $t$.
+    \item $I_{ij,t}^{sqr} \in \mathbb{R}$: la raíz del flujo de corriente en el arco  $ij$ en el período $t$.
+    \item $V_{i,t}^{sqr} \in \mathbb{R}$: la raíz del voltaje presente en el nodo $i$ en el período $t$.
+    \item $\Delta_{ij,t}^V \in \mathbb{R}$: intervalo de discretización de $V_{i,t}^{sqr}$.
+    \item $y_{i,j,t} \in \{0,1\}$: define si el interruptor en el arco  $ij$ estará activo en el período $t$.
+\end{itemize}    
+ 
+Note que, de entrada, el problema comenzaría siendo uno de optimización lineal entera mixta debido al uso de variables tanto continuas como binarias.
+
+\subsection*{Restricciones.}
+\begin{parenenum}
+    \item $\forall i \in \Omega_b, t \in T: \sum_{ki \in \Omega_l}{P_{ki,t}} - \sum_{ij \in \Omega_l}{(P_{ij,t} + R_{ij}I_{ij,t}^{sqr})} + P_{i,t}^S = P_{i,t}^D$.
+    \item $\forall i \in \Omega_b, t \in T: \sum_{ki \in \Omega_l}{Q_{ki,t}} - \sum_{ij \in \Omega_l}{(Q_{ij,t} + X_{ij}I_{ij,t}^{sqr})} + Q_{i,t}^S = Q_{i,t}^D$.
+    \item $\forall ij \in \Omega_l, t \in T: V_{i,t}^{sqr} = V_{j,t}^{sqr} + 2(R_{ij}P_{ij,t} + X_{ij}Q_{ij,t}) - Z_{ij}^2I_{ij,t}^{sqr} + \Delta_{ij,t}^V$.
+    \item $\forall ij \in \Omega_l, t \in T: -b^V (1 - y_{ij,t}) \leq \Delta_{ij,t}^V \leq b^V (1 - y_{ij,t})$.
+    \item $\forall ij \in \Omega_l, t \in T: V_{i,t}^{sqr} I_{ij,t}^{sqr} = P_{ij,t}^2 + Q_{ij,t}^2$.
+    \item $\forall i \in \Omega_b, t \in T: \underline{V}^2 \leq V_{i,t}^{sqr} \leq \overline{V}^2$.
+    \item $\forall ij \in \Omega_l, t \in T: 0 \leq I_{ij,t}^{sqr} \leq \overline{I}_{ij}^2y_{ij,t}$.
+    \item $\sum_{ij \in \Omega_l} y_{ij,t} = |N|-1$.
+\end{parenenum}
+
+A continuación, se explicarán cada una de las restricciones de manera individual:
+\begin{parenenum}
+    \item Ecuación de balance de potencia activa. Esta restricción y la siguiente dicen, de manera coloquial, "todo lo que entra debe salir". Además, están fuertemente relacionadas con la primera ley de Kirchhoff. 
+    \item Ecuación de balance de potencia reactiva.
+    \item Ecuación que representa la disminución del voltaje en un arco particular. Está fuertemente ligada a la ley de Ohm.
+    \item Esta desigualdad permite restringir los valores entre los cuales los intervalos de discretización deberán encontrarse, y se activará solo cuando se decida prender el interruptor de un arco particular.
+    \item Ecuación que permite calcular la magnitud del flujo de corriente de un arco particular. También está fuertemente ligada a la ley de Ohm.
+    \item Definir los límites del voltaje.
+    \item Definir los límites del flujo de corriente.
+    \item Debe haber una cantidad suficiente de circuitos para satisfacer una de las dos condiciones para que la solución defina una topología radial.
+\end{parenenum}
+
+Debido a que hay restricciones con varias variables de decisión al cuadrado, así como otras en las que se multiplican entre sí, este problema de optimización no es lineal. Específicamente, es un problema de programación no lineal entera mixta. Por ende, si se planea resolverlo con programación lineal, es necesario llevar a cabo varias linearizaciones. Además, este problema requiere un gran conocimiento de teoría de grafos y flujo en redes, ya que los SDEE se pueden representar mediante redes. Por ejemplo, se necesita conocimiento sobre conceptos como grafos conexos y árboles de recubrimiento.
+
+
+% ==================================================
+% SECCIÓN 5: IMPORTANCIA Y RELEVANCIA
+% ==================================================
+
+\section{Importancia y relevancia.}
+
+La gestión eficiente de los SDEE es de suma importancia en un mundo donde la automatización avanzada y las tecnologías de redes inteligentes están en constante evolución. Según Borges et al. (2014) $^{\ref{ref_3}}$, el problema de reconfiguración es particularmente relevante en la actualidad, dado que estas tecnologías se vuelven más accesibles para las empresas de distribución. Un aspecto fundamental en la operación de los SDEE es la planificación adecuada. Como señalan Lavorato et al. Lavorato et al. (2012) $^{\ref{ref_4}}$, la mayoría de los SDEE operan con una topología radial por razones técnicas fundamentales. Esta topología facilita la coordinación y protección del sistema, al tiempo que reduce la corriente de cortocircuito, mejorando la seguridad y la eficiencia operativa. Es esencial que estos sistemas sean planificados adecuadamente para garantizar su funcionamiento eficiente y confiable. \par
+
+Por otro lado, los beneficios de la reconfiguración de redes en SDEE, como lo destaca Hernández (2013)$^{\ref{ref_5}}$, son notables tanto desde el punto de vista técnico como económico. Estos beneficios incluyen la reducción de pérdidas de energía y potencia, el ahorro en kilovatios-hora comprados a empresas generadoras, la disminución de la demanda pico de potencia y la prolongación de la vida útil de los equipos de distribución. Estos resultados contribuyen a la eficiencia operativa y al ahorro de costos. Del mismo modo, Mon (2014)$^{\ref{ref_6}}$ señala que muchos sistemas de distribución de energía eléctrica enfrentan problemas como regulación de tensión deficiente, factor de potencia bajo, pérdidas elevadas y sobrecarga, lo que afecta la fiabilidad en la continuidad del suministro. Para abordar estos desafíos, es imperativo mejorar el funcionamiento de los SDEE, lo que incluye la reducción de pérdidas, la mejora de la regulación de la tensión y la optimización general. \par
+
+Para resolver eficazmente estos problemas y minimizar las pérdidas de potencia, Salau (2020)$^{\ref{ref_7}}$ destaca varias técnicas, entre las que se incluyen la reconfiguración de la red (RN), la generación distribuida (GD) y la colocación estratégica de condensadores. De estas técnicas, la reconfiguración de la red (RN) se destaca como la más utilizada debido a su rentabilidad y efectividad.
+
+
+% ==================================================
+% SECCIÓN 6: OBJETIVOS DEL PROYECTO
+% ==================================================
+
+\section{Objetivos del proyecto.}
+\subsection*{Objetivo general.}
+El objetivo principal de este proyecto es construir una configuración óptima para el Sistema de Distribución de Energía (SDEE) con el fin de minimizar los costos asociados a las pérdidas de energía activa en el sistema, lo que a su vez se traducirá en ahorros económicos y una reducción importante del impacto ambiental. El enfoque de optimización que se utilizará es la reconfiguración de la red (RN), una técnica fundamental que se ha demostrado efectiva en la mejora de la eficiencia operativa de los SDEE.
+
+Además de este propósito central, se tienen varios objetivos específicos interrelacionados:
+\begin{enumerate}
+    \item Lograr una topología de red equilibrada que asegure una distribución de carga uniforme para reducir el riesgo de sobrecargas.
+    \item Minimizar posibles interrupciones en el suministro eléctrico y mantener niveles de tensión estables y óptimos en toda la red mediante el desarrollo de controles efectivos.
+\end{enumerate}
+
+\subsection*{Objetivos específicos.}
+\begin{enumerate}
+    \item Implementar el modelo propuesto en el programa académico como punto de referencia inicial. Esto proporcionará un marco de referencia para evaluar y comparar futuras configuraciones óptimas.
+    \item Desarrollar una formulación matemática sólida y precisa que permita la optimización de una mejor configuración para el SDEE.
+    \item Realizar pruebas con datos reales de SDEE para validar la eficacia de la configuración óptima propuesta en comparación con el modelo de referencia, fortaleciendo así la aplicabilidad práctica de las soluciones.
+\end{enumerate}
+
+
+% ==================================================
+% SECCIÓN 7: REFERENCIAS
 % ==================================================
 
 \section*{Bibliografía y referencias.}
 \begin{enumerate}[label={[{\arabic*}]}]
     \item \label{ref_1} Short, T. A. (2003). \textit{Electric Power Distribution Handbook}. Power Publishing.
     \item \label{ref_2} Verma, E. P. (2016). \textit{Mesh Interconnection Network Definition, Advantages, Disadvantages}.\ YuvaYana. https://er.yuvayana.org/mesh-interconnection-network-definition-advantages\\disadvantages/
+    \item \label{ref_3} Borges, M. C. O., Franco, J. F., \& Rider, M. J. (2014). \textit{Optimal Reconfiguration of Electrical Distribution Systems Using Mathematical Programming}. Fecha de publicación: 28 de agosto de 2013. URL: https://github.com/tabarespozos/Flujo\_en\_redes\_202302/blob/main\\/Proyecto/2-Optimal\%20Reconfiguration%20of%20Electrical%20Distribution%20Systems%20Using%20Mathematical%20Programming.pdf.
+    \item \label{ref_4} Lavorato, M., Franco, J.F., Rider, M.J., \& Romero, R.A. (2012). Imposing Radiality Constraints in Distribution System Optimization Problems. IEEE Transactions on Power Systems, 27, 172-180.
+    \item \label{ref_5} Hernández Figueroa, J. (2013). Reconfiguración de redes eléctricas en sistemas de distribución de energía eléctrica utilizando Teoría de Grafos.
+    \item \label{ref_6} Mon, M.Y. (2014). Design and Calculation of 5 MVAR Shunt Capacitor Bank at 33 kV Bus in Distribution Substation.
+    \item \label{ref_7} Salau, A.O., Gebru, Y.W., \& Bitew, D. (2020). Optimal network reconfiguration for power loss minimization and voltage profile enhancement in distribution systems. Heliyon, 6.
+    \item Baran, M.E., \& Wu, F.F. (1989). Network Reconfiguration in Distribution Systems for Loss Reduction and Load Balancing. IEEE Power Engineering Review, 9, 101-102.
 \end{enumerate}
 
 
