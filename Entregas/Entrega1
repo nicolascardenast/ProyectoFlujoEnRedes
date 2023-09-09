@@ -2,23 +2,15 @@
 % SECCIÓN 1: CONFIGURACIÓN E IMPORTACIONES
 % ==================================================
 
-% Configurar de documento.
+% Configurar el documento.
 \documentclass[12pt]{article}
 \usepackage[left=20mm,right=20mm,top=20mm,bottom=20mm,footskip=16mm]{geometry}
-%\setlength{\parindent}{0cm}
 
 % Importar los paquetes.
-\usepackage{hyperref} % Hipervínculos.
-\usepackage{enumitem} % Lista de referencias.
-\usepackage{amsmath} % Para definir las variables de decisión.
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb,amsthm, amscd}
-\usepackage{mathrsfs}
-\usepackage[T1]{fontenc}
-\usepackage{fancyhdr}
-\usepackage{fancyvrb}
-\usepackage{graphicx}
-\usepackage{float}
+\usepackage{hyperref} % Para vincular con la lista de referencias.
+\usepackage{enumitem} % Para el formato de los números de la lista de referencias.
+\usepackage{amsmath, amssymb} % Para definir el problema.
+\usepackage{fancyhdr} % Para el encabezado de las páginas.
 
 % Definiciones.
 \newlist{parenenum}{enumerate}{1}
@@ -75,12 +67,11 @@
 % ==================================================
 
 \section{Contexo y antecedentes.}
-
 Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante). Por lo tanto, es de vital importancia tener al menos una idea general de lo que son estos sistemas y de cómo funcionan.
 
 Como explica Thomas Allen Short (2003) $^{\ref{ref_1}}$, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
 
-También es importante considerar que un SDEE se configura como una red mallada interconectada. En primer lugar, una malla es una red en la cual cada elemento está conectado con todos los demás. Por lo tanto, una red mallada interconectada consiste en un conjunto de mallas que están interconectadas de tal manera que se forma una red más extensa $^{\ref{ref_2}}$. \par
+También es importante considerar que un SDEE se configura como una red mallada interconectada. En primer lugar, una malla es una red en la cual cada elemento está conectado con todos los demás. Por lo tanto, una red mallada interconectada consiste en un conjunto de mallas que están interconectadas de tal manera que se forma una red más extensa.$^{\ref{ref_2}}$ \par
 
 Por último, es necesario considerar un aspecto clave sobre el SDEE que se trabajará: este funciona con una topología radial. En el contexto de los SDEE, una topología radial es aquella en la que la energía eléctrica fluye en una sola dirección. De manera general (y como se aplica en este caso), la energía se origina en una subestación y se distribuye a varios clientes. Como explica Short $^{\ref{ref_1}}$, estas topologías presentan una serie de ventajas, a saber: facilitan la protección contra flujos dañinos, reducen el costo, son más fáciles de predecir y ofrecen mayor facilidad para el control del voltaje. En estas topologías existen ciertos interruptores de enlace que suelen utilizarse para corregir rápidamente flujos dañinos. Estos suelen ser manipulados de forma manual, pero también existen sistemas con interruptores automatizados que realizan estas operaciones de manera automática. \par
 
@@ -99,7 +90,7 @@ El voltaje puede entenderse como la fuerza que impulsa la electricidad al movers
 % ==================================================
 
 \section{Definición del problema.}
-Para plantear una definición formal y rigurosa del problema se usó el artículo de Borges et al (2014). $^{\ref{ref_3}}$
+Para plantear una definición formal y rigurosa del problema se usó el artículo de Borges et al (2014).$^{\ref{ref_3}}$
 
 \subsection*{Conjuntos.}
 \begin{itemize}
@@ -170,7 +161,6 @@ Debido a que hay restricciones con varias variables de decisión al cuadrado, as
 % ==================================================
 
 \section{Importancia y relevancia.}
-
 La gestión eficiente de los SDEE es de suma importancia en un mundo donde la automatización avanzada y las tecnologías de redes inteligentes están en constante evolución. Según Borges et al. (2014) $^{\ref{ref_3}}$, el problema de reconfiguración es particularmente relevante en la actualidad, dado que estas tecnologías se vuelven más accesibles para las empresas de distribución. Un aspecto fundamental en la operación de los SDEE es la planificación adecuada. Como señalan Lavorato et al. Lavorato et al. (2012) $^{\ref{ref_4}}$, la mayoría de los SDEE operan con una topología radial por razones técnicas fundamentales. Esta topología facilita la coordinación y protección del sistema, al tiempo que reduce la corriente de cortocircuito, mejorando la seguridad y la eficiencia operativa. Es esencial que estos sistemas sean planificados adecuadamente para garantizar su funcionamiento eficiente y confiable. \par
 
 Por otro lado, los beneficios de la reconfiguración de redes en SDEE, como lo destaca Hernández (2013)$^{\ref{ref_5}}$, son notables tanto desde el punto de vista técnico como económico. Estos beneficios incluyen la reducción de pérdidas de energía y potencia, el ahorro en kilovatios-hora comprados a empresas generadoras, la disminución de la demanda pico de potencia y la prolongación de la vida útil de los equipos de distribución. Estos resultados contribuyen a la eficiencia operativa y al ahorro de costos. Del mismo modo, Mon (2014)$^{\ref{ref_6}}$ señala que muchos sistemas de distribución de energía eléctrica enfrentan problemas como regulación de tensión deficiente, factor de potencia bajo, pérdidas elevadas y sobrecarga, lo que afecta la fiabilidad en la continuidad del suministro. Para abordar estos desafíos, es imperativo mejorar el funcionamiento de los SDEE, lo que incluye la reducción de pérdidas, la mejora de la regulación de la tensión y la optimización general. \par
@@ -215,9 +205,6 @@ Además de este propósito central, se tienen varios objetivos específicos inte
     \item \label{ref_7} Salau, A.O., Gebru, Y.W., \& Bitew, D. (2020). Optimal network reconfiguration for power loss minimization and voltage profile enhancement in distribution systems. Heliyon, 6.
     \item Baran, M.E., \& Wu, F.F. (1989). Network Reconfiguration in Distribution Systems for Loss Reduction and Load Balancing. IEEE Power Engineering Review, 9, 101-102.
 \end{enumerate}
-
-
-
 
 
 % Sentencia de fin del documento.
