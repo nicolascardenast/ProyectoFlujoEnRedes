@@ -1,0 +1,286 @@
+% ==================================================
+% SECCIÓN 1: CONFIGURACIÓN E IMPORTACIONES
+% ==================================================
+
+% Configurar el documento.
+\documentclass[12pt]{article}
+\usepackage[left=20mm,right=20mm,top=20mm,bottom=20mm,footskip=16mm]{geometry}
+
+% Importar los paquetes.
+\usepackage{hyperref} % Para vincular con la lista de referencias.
+\usepackage{enumitem} % Para el formato de los números de la lista de referencias.
+\usepackage{amsmath, amssymb} % Para definir el problema.
+\usepackage{fancyhdr} % Para el encabezado de las páginas.
+\usepackage{xcolor}  % Para las correcciones.
+
+% Definiciones.
+\newlist{parenenum}{enumerate}{1}
+\setlist[parenenum,1]{label=(\arabic*)}
+
+% Crear encabezado de las páginas.
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{Flujo en Redes}}
+\rhead{\textbf{Universidad de los Andes}}
+\cfoot{\thepage}
+
+
+% ==================================================
+% SECCIÓN 2: PORTADA
+% ==================================================
+
+% Sentencia de inicio del documento.
+\begin{document}
+
+% Crear la portada.
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+            
+        \Huge
+        \textbf{Entrega 2: Estado del Arte\\Proyecto del Problema de Reconfiguración}
+            
+        \vspace{0.5cm}
+        \LARGE
+        IIND-4115
+            
+        \vspace{4.5cm}
+            
+        \textbf{José Nicolás Cárdenas Trujillo} \\ j.cardenast - 201922006
+        
+        \textbf{\\Karen Dayana Culma Ramírez}\\ kd.culma - 201817546
+
+            
+        \vfill
+            
+        \Large
+        Departamento de Ingeniería Industrial\\
+        Universidad de los Andes\\
+        Bogotá D.C., Colombia\\
+        2023-02
+            
+    \end{center}
+\end{titlepage}
+
+
+% ==================================================
+% SECCIÓN 3: CONTEXTO Y ANTECEDENTES
+% ==================================================
+
+\textbf{Nota importante}: Alejandra, para que fuera más fácil al momento de calificar, escribimos en rojo las correcciones que hicimos a la primera entrega.
+
+\section{Contexo y antecedentes.}
+Grosso modo, el problema consiste en encontrar la reconfiguración óptima de un Sistema de Distribución de Energía Eléctrica (SDEE, en adelante). Por lo tanto, es de vital importancia tener al menos una idea general de lo que son estos sistemas y de cómo funcionan. \textcolor{red}{Antes de eso, es importante hablar un poco sobre la relevancia de la energía eléctrica en la actualidad.} \par
+
+\textcolor{red}{La electricidad es esencial en la sociedad actual debido a su versatilidad, su papel fundamental en la transición hacia fuentes de energía más limpias y renovables, como la solar y la eólica, su contribución a la electrificación de la movilidad, su importancia en la tecnología de la información y la comunicación, su papel en la automatización industrial y la eficiencia, su influencia en la calidad de vida y el bienestar, y su función crucial en la investigación y el desarrollo tecnológico, lo que la convierte en un pilar fundamental para la vida moderna y la sostenibilidad ambiental. Actualmente,  este tipo de energía está experimentando una profunda transformación impulsada por la creciente adopción de fuentes de energía renovable, la descentralización de la generación, el almacenamiento de energía, la electrificación de la movilidad, la digitalización y la automatización, la eficiencia energética y la integración de la inteligencia artificial. Estos cambios están revolucionando la forma en que se produce, distribuye y utiliza la electricidad, promoviendo una red más sostenible, flexible y eficiente, y contribuyendo a la lucha contra el cambio climático.} \par
+
+\textcolor{red}{Teniendo lo anterior en cuenta, los sistemas de distribución de energía eléctrica están experimentando una transformación crucial en respuesta a los cambios actuales en la energía eléctrica. Estos sistemas se vuelven fundamentales para la integración exitosa de fuentes de energía renovable, la descentralización de la generación, el almacenamiento de energía y la electrificación del transporte. Además, la adopción de tecnologías avanzadas de gestión y automatización es esencial para mantener la estabilidad y la eficiencia de la red eléctrica en este contexto cambiante. En conjunto, estos cambios destacan la importancia crítica de los sistemas de distribución de energía eléctrica en la transición hacia un suministro de electricidad más limpio, resiliente y eficiente.}
+
+Como explica Thomas Allen Short (2003) $^{\ref{ref_1}}$, los sistemas de distribución de energía eléctrica son responsables de llevar la electricidad desde las redes de alta tensión hasta los clientes. Estos constan de cuatro componentes principales: las líneas primarias, las subestaciones, los transformadores y los circuitos secundarios. Las líneas primarias operan a un 'medio voltaje' (entre 600 V y 35 kV) y reciben la electricidad de alto voltaje. Luego, las subestaciones de distribución utilizan transformadores para reducir el voltaje de transmisión (entre 35 kV y 230 kV), permitiendo la distribución a través de los circuitos primarios. Finalmente, cerca de los usuarios, se utiliza otro transformador que reduce aún más el voltaje (comúnmente a 120/240 V) para su distribución a través de los circuitos secundarios. Desde este último transformador, los circuitos secundarios se conectan a los usuarios. En resumen, estos sistemas reciben electricidad de alto voltaje y la reducen de manera progresiva antes de entregarla a los clientes. \par
+
+Por último, es necesario considerar un aspecto clave sobre el SDEE que se trabajará: este funciona con una topología radial. En el contexto de los SDEE, una topología radial es aquella en la que la energía eléctrica fluye en una sola dirección. De manera general (y como se aplica en este caso), la energía se origina en una subestación y se distribuye a varios clientes. Como explica Short $^{\ref{ref_1}}$, estas topologías presentan una serie de ventajas, a saber: facilitan la protección contra flujos dañinos, reducen el costo, son más fáciles de predecir y ofrecen mayor facilidad para el control del voltaje. En estas topologías existen ciertos interruptores de enlace que suelen utilizarse para corregir rápidamente flujos dañinos. Estos suelen ser manipulados de forma manual, pero también existen sistemas con interruptores automatizados que realizan estas operaciones de manera automática. \par
+
+Considerando todo este contexto, ahora es posible comprender el problema. Dado que la topología radial original del SDEE puede modificarse mediante el uso de estos interruptores de enlace, el problema consiste en encontrar la configuración radial que optimice cierto índice de rendimiento (que se explicará más adelante). Particularmente, se quieren minimizar pérdidas. \par
+
+Este es un problema de alta complejidad, lo que suscita preguntas sobre su importancia y relevancia en la actualidad. En la sección 3 de este documento se proporcionará una explicación detallada de la relevancia de este problema. En términos generales, la gestión eficiente de los Sistemas de Distribución de Energía Eléctrica (SDEE) es fundamental en un mundo con tecnologías de redes inteligentes en constante evolución. La reconfiguración de redes en los SDEE se destaca como una técnica clave para mejorar la eficiencia operativa, reducir las pérdidas de energía, ahorrar costos y abordar desafíos técnicos y económicos, como la regulación de tensión deficiente y las pérdidas elevadas. Entre las técnicas utilizadas, la reconfiguración de red (RN) se considera especialmente efectiva y rentable.
+
+\subsubsection*{Algunas definiciones.}
+Antes de continuar, puede ser útil considerar las siguientes definiciones de algunos fenómenos del problema. Estos pertenecen a la rama de la ingeniería de sistemas de potencia. Sin embargo, dado que el objetivo del proyecto es enfocarse en la parte de optimización del problema, estas definiciones serán muy superficiales y solo servirán para tener una pequeña intuición sobre los fenómenos físicos con los que se lidiará. \par
+
+El voltaje puede entenderse como la fuerza que impulsa la electricidad al moverse por cables y aparatos electrónicos, similar a la fuerza que impulsa el agua en una manguera. La potencia activa es el fenómeno físico que explica cómo se convierte la electricidad en acción, como el motor de un automóvil. La potencia reactiva es la parte de la electricidad que contribuye al buen funcionamiento de las cosas. La corriente se refiere al flujo de electrones que transporta electricidad y hace que las cosas funcionen. Finalmente, la resistencia limita la corriente en circuitos de corriente continua y corriente alterna, y la reactancia se aplica específicamente a circuitos de corriente alterna y se relaciona con el efecto de almacenamiento de energía en inductores y condensadores.
+
+
+
+% ==================================================
+% SECCIÓN 4: IMPORTANCIA Y RELEVANCIA
+% ==================================================
+
+\section{Importancia y relevancia.}
+\textcolor{red}{\textbf{Nota:} como nos sugeriste, esta sección se puso antes que la que está relacionada a la definición del problema.}\par
+
+La gestión eficiente de los SDEE es de suma importancia en un mundo donde la automatización avanzada y las tecnologías de redes inteligentes están en constante evolución. Según Borges et al. (2014) $^{\ref{ref_3}}$, el problema de reconfiguración es particularmente relevante en la actualidad, dado que estas tecnologías se vuelven más accesibles para las empresas de distribución. Un aspecto fundamental en la operación de los SDEE es la planificación adecuada. Como señalan Lavorato et al. (2012) $^{\ref{ref_4}}$, la mayoría de los SDEE operan con una topología radial por razones técnicas fundamentales. Esta topología facilita la coordinación y protección del sistema, al tiempo que reduce la corriente de cortocircuito, mejorando la seguridad y la eficiencia operativa. Es esencial que estos sistemas sean planificados adecuadamente para garantizar su funcionamiento eficiente y confiable. \par
+
+Por otro lado, los beneficios de la reconfiguración de redes en SDEE, como lo destaca Hernández (2013)$^{\ref{ref_5}}$, son notables tanto desde el punto de vista técnico como económico. Estos beneficios incluyen la reducción de pérdidas de energía y potencia, el ahorro en kilovatios-hora comprados a empresas generadoras, la disminución de la demanda pico de potencia y la prolongación de la vida útil de los equipos de distribución. Estos resultados contribuyen a la eficiencia operativa y al ahorro de costos. Del mismo modo, Mon (2014)$^{\ref{ref_6}}$ señala que muchos sistemas de distribución de energía eléctrica enfrentan problemas como regulación de tensión deficiente, factor de potencia bajo, pérdidas elevadas y sobrecarga, lo que afecta la fiabilidad en la continuidad del suministro. Para abordar estos desafíos, es imperativo mejorar el funcionamiento de los SDEE, lo que incluye la reducción de pérdidas, la mejora de la regulación de la tensión y la optimización general. \par
+
+Para resolver eficazmente estos problemas y minimizar las pérdidas de potencia, Salau (2020)$^{\ref{ref_7}}$ destaca varias técnicas, entre las que se incluyen la reconfiguración de la red (RN), la generación distribuida (GD) y la colocación estratégica de condensadores. De estas técnicas, la reconfiguración de la red (RN) se destaca como la más utilizada debido a su rentabilidad y efectividad.
+
+
+% ==================================================
+% SECCIÓN 5: DEFINICIÓN DEL PROBLEMA
+% ==================================================
+
+\section{Definición del problema.}
+\textcolor{red}{Es importante considerar que un SDEE se configura como una red mallada interconectada. En primer lugar, una malla es una red en la cual cada elemento está conectado con todos los demás. Por lo tanto, una red mallada interconectada consiste en un conjunto de mallas que están interconectadas de tal manera que se forma una red más extensa.$^{\ref{ref_2}}$} \par
+
+Para plantear una definición formal y rigurosa del problema se usó el artículo de Borges et al (2014).$^{\ref{ref_3}}$
+
+\subsection{Conjuntos.}
+\begin{itemize}
+    \item $\Omega_b$: conjunto de nodos.
+    \item $\Omega_l$: conjunto de arcos.
+    \item $T$: conjunto de períodos de tiempo.
+\end{itemize}
+
+\subsection{Parámetros.}
+\begin{itemize}
+    \item $P_{i}^D \in \mathbb{R}$: demanda de potencia activa en el nodo $i$ en el período $t$ (kW).
+    \item $Q_{i}^D \in \mathbb{R}$: demanda de potencia reactiva en el nodo $i$ (KVAr).
+    \item $R_{ij} \in \mathbb{R}$: resistencia del arco  $ij$ ($\Omega$).
+    \item $X_{ij} \in \mathbb{R}$: reactancia del arco  $ij$ ($\Omega$).
+    \item $Z_{ij} \in \mathbb{R}$: impedancia del arco  $ij$ ($\Omega$).
+    \item $\underline{V} \in \mathbb{R}$: voltaje mínimo (kV).
+    \item $\overline{V} \in \mathbb{R}$: voltaje máximo (kV).
+    \item $\overline{I}_{ij} \in \mathbb{R}$: máxima corriente del arco $ij$ (A).
+\end{itemize}
+
+\subsection{Función objetivo.}
+Se quiere minimizar la pérdida de potencia activa del SDEE:
+\begin{equation*}
+    \min \sum_{ij \in \Omega_l} \sum_{t \in T} R_{ij} I_{ij,t}^{sqr}.
+\end{equation*}
+
+\subsection{Variables de decisión.}
+\begin{itemize}
+    \item $P_{ij,t} \in \mathbb{R}$: flujo de potencia activa en el arco  $ij$ en el período $t$.
+    \item $Q_{ij,t} \in \mathbb{R}$: flujo de potencia reactiva en el arco $ij$ en el período $t$.
+    \item $I_{ij,t}^{sqr} \in \mathbb{R}$: la raíz del flujo de corriente en el arco  $ij$ en el período $t$.
+    \item $V_{i,t}^{sqr} \in \mathbb{R}$: la raíz del voltaje presente en el nodo $i$ en el período $t$.
+    \item $\Delta_{ij,t}^V \in \mathbb{R}$: intervalo de discretización de $V_{i,t}^{sqr}$.
+    \item $y_{i,j,t} \in \{0,1\}$: define si el interruptor en el arco  $ij$ estará activo en el período $t$.
+\end{itemize}    
+ 
+Note que, de entrada, el problema comenzaría siendo uno de optimización lineal entera mixta debido al uso de variables tanto continuas como binarias.
+
+\subsection{Restricciones.}
+\begin{parenenum}
+    \item $\forall i \in \Omega_b, t \in T: \sum_{ki \in \Omega_l}{P_{ki,t}} - \sum_{ij \in \Omega_l}{(P_{ij,t} + R_{ij}I_{ij,t}^{sqr})} + P_{i,t}^S = P_{i,t}^D$.
+    \item $\forall i \in \Omega_b, t \in T: \sum_{ki \in \Omega_l}{Q_{ki,t}} - \sum_{ij \in \Omega_l}{(Q_{ij,t} + X_{ij}I_{ij,t}^{sqr})} + Q_{i,t}^S = Q_{i,t}^D$.
+    \item $\forall ij \in \Omega_l, t \in T: V_{i,t}^{sqr} = V_{j,t}^{sqr} + 2(R_{ij}P_{ij,t} + X_{ij}Q_{ij,t}) - Z_{ij}^2I_{ij,t}^{sqr} + \Delta_{ij,t}^V$.
+    \item $\forall ij \in \Omega_l, t \in T: -b^V (1 - y_{ij,t}) \leq \Delta_{ij,t}^V \leq b^V (1 - y_{ij,t})$.
+    \item $\forall ij \in \Omega_l, t \in T: V_{i,t}^{sqr} I_{ij,t}^{sqr} = P_{ij,t}^2 + Q_{ij,t}^2$.
+    \item $\forall i \in \Omega_b, t \in T: \underline{V}^2 \leq V_{i,t}^{sqr} \leq \overline{V}^2$.
+    \item $\forall ij \in \Omega_l, t \in T: 0 \leq I_{ij,t}^{sqr} \leq \overline{I}_{ij}^2y_{ij,t}$.
+    \item $\sum_{ij \in \Omega_l} y_{ij,t} = |N|-1$.
+\end{parenenum}
+
+A continuación, se explicarán cada una de las restricciones de manera individual:
+\begin{parenenum}
+    \item Ecuación de balance de potencia activa. Esta restricción y la siguiente dicen, de manera coloquial, "todo lo que entra debe salir". Además, están fuertemente relacionadas con la primera ley de Kirchhoff. 
+    \item Ecuación de balance de potencia reactiva.
+    \item Ecuación que representa la disminución del voltaje en un arco particular. Está fuertemente ligada a la ley de Ohm.
+    \item Esta desigualdad permite restringir los valores entre los cuales los intervalos de discretización deberán encontrarse, y se activará solo cuando se decida prender el interruptor de un arco particular.
+    \item Ecuación que permite calcular la magnitud del flujo de corriente de un arco particular. También está fuertemente ligada a la ley de Ohm.
+    \item Definir los límites del voltaje.
+    \item Definir los límites del flujo de corriente.
+    \item Debe haber una cantidad suficiente de circuitos para satisfacer una de las dos condiciones para que la solución defina una topología radial.
+\end{parenenum}
+
+Debido a que hay restricciones con varias variables de decisión al cuadrado, así como otras en las que se multiplican entre sí, este problema de optimización no es lineal. Específicamente, es un problema de programación no lineal entera mixta. Por ende, si se planea resolverlo con programación lineal, es necesario llevar a cabo varias linearizaciones. Además, este problema requiere un gran conocimiento de teoría de grafos y flujo en redes, ya que los SDEE se pueden representar mediante redes. Por ejemplo, se necesita conocimiento sobre conceptos como grafos conexos y árboles de recubrimiento.
+
+
+% ==================================================
+% SECCIÓN 6: OBJETIVOS Y EXPECTATIVAS
+% ==================================================
+
+\section{Objetivos y expectativas del proyecto.}
+\subsection{Objetivo general.}
+El objetivo principal de este proyecto es construir una configuración óptima para el Sistema de Distribución de Energía (SDEE) con el fin de minimizar los costos asociados a las pérdidas de energía activa en el sistema, lo que a su vez se traducirá en ahorros económicos y una reducción importante del impacto ambiental. El enfoque de optimización que se utilizará es la reconfiguración de la red (RN), una técnica fundamental que se ha demostrado efectiva en la mejora de la eficiencia operativa de los SDEE. \par
+
+Además de este propósito central, se tienen varios objetivos específicos interrelacionados:
+\begin{enumerate}
+    \item Lograr una topología de red equilibrada que asegure una distribución de carga uniforme para reducir el riesgo de sobrecargas y minimizar posibles interrupciones en el suministro eléctrico.
+    \item Desarrollar controles efectivos para mantener niveles de tensión estables y óptimos en toda la red.
+\end{enumerate}
+
+\subsection{Objetivos específicos.}
+\begin{enumerate}
+    \item Implementar el modelo propuesto en el programa académico como punto de referencia inicial. Esto proporcionará un marco de referencia para evaluar y comparar futuras configuraciones óptimas.
+    \item Desarrollar una formulación matemática sólida y precisa que permita la optimización de una mejor configuración para el SDEE.
+    \item Realizar pruebas con datos reales de SDEE para validar la eficacia de la configuración óptima propuesta en comparación con el modelo de referencia, fortaleciendo así la aplicabilidad práctica de las soluciones.
+\end{enumerate}
+
+\subsection{Expectativas.}
+Este proyecto aborda una interesante oportunidad, que se refiere a una cuestión técnica y financiera muy pertinente. Al reducir los costos y garantizar un suministro constante de electricidad, se anticipa que las soluciones propuestas tendrán un impacto significativo en la sostenibilidad y eficiencia de los SDEE, beneficiando tanto a las empresas de distribución como a los usuarios finales. El énfasis en la reconfiguración de la red (RN) y el uso de un modelo matemático sólido prometen ayudar al sector energético a mejorar su eficacia y sostenibilidad en el futuro.
+
+
+
+% ==================================================
+% SECCIÓN 7: DESCRIPCIÓN DE TÉCNICAS Y MÉTODOS PREVIOS
+% ==================================================
+
+\section{Estado del arte.}
+Desde una perspectiva actual, la optimización de la reconfiguración de redes de distribución eléctrica se ha convertido en un desafío de gran relevancia en la ingeniería eléctrica. La búsqueda de soluciones óptimas en este contexto ha dado lugar al desarrollo y aplicación de diversos métodos y técnicas. En situaciones de pequeña escala, los enfoques de solución exacta, como la programación lineal, pueden resultar efectivos. Sin embargo, a medida que los problemas crecen en complejidad y alcance, la utilización de métodos heurísticos se vuelve necesario, dado el crecimiento exponencial del espacio de búsqueda y el tiempo requerido para alcanzar una solución óptima o cercana a ella. Este estado del arte abordará las distintas técnicas utilizadas en la reconfiguración de sistemas de distribución eléctrica, evaluando sus fortalezas y debilidades en la resolución de problemas complejos en este campo de la ingeniería eléctrica. \par
+
+\subsection{Descripción de técnicas y métodos previos.}
+El Binary Bat Algorithm (BBA), derivado del Bat Algorithm (BA) propuesto por Mirjalili y Yang en 2014, se especializa en la resolución de problemas de optimización que involucran variables binarias (0 o 1), se utiliza una población de "murciélagos artificiales" para explorar y buscar soluciones óptimas en un espacio de búsqueda, donde cada "murciélago" representa una posible solución al problema. Estos murciélagos artificiales pueden modificar sus soluciones y comunicarse entre sí para mejorar la calidad de las soluciones a lo largo del tiempo. El objetivo principal del BBA es encontrar la mejor combinación de variables binarias que optimice una función objetivo predefinida, sujeta a ciertas restricciones. Quintero (2019) propone una significativa mejora para el BBA, denominada Modified Binary Bat Algorithm (MBBA), diseñada específicamente para abordar la reconfiguración de redes de distribución eléctrica con el objetivo de minimizar las pérdidas de potencia real. MBBA se destaca como una técnica prometedora en este contexto, generando configuraciones que se aproximan a la óptima para reducir las pérdidas de potencia. Es importante destacar que la reconfiguración no necesariamente requiere ser en tiempo real, sino que puede llevarse a cabo en un marco temporal más amplio, aprovechando datos históricos, debido a que las cargas tienden a mantener una tendencia general a lo largo del año. A pesar de su potencial, futuras investigaciones deben enfocarse en mejorar la eficiencia computacional y reducir los tiempos de ejecución para abordar simulaciones en tiempo real. \par
+
+Adicional, Gebru et al. (2021) y Shafik et al. (2019) presentan el Modified Particle Swarm Optimization (MPSO) como una moderna técnica de optimización. Su objetivo es determinar de manera óptima la ubicación, tamaño de las baterías de condensadores necesarias, y la configuración de interruptores que deben abrirse o cerrarse en sistemas de distribución eléctrica. El MPSO es una adaptación del Particle Swarm Optimization (PSO) inicialmente propuesto por Kennedy y Eberhart en 1995. Este algoritmo de optimización se inspira en el comportamiento de aves y peces en busca de comida. Su principio es sencillo: las partículas, que representan soluciones potenciales, exploran el espacio de búsqueda para encontrar la mejor solución posible. Estas partículas ajustan su movimiento basándose en su propia experiencia y en la de las demás en el grupo. El PSO destaca por su eficiencia al explorar el espacio de búsqueda, hallando soluciones cercanas a óptimos globales. A medida que las partículas colaboran y comparten información sobre las mejores soluciones, el algoritmo tiende a converger hacia soluciones de alta calidad. El PSO encuentra aplicaciones en diversas áreas, desde optimización matemática hasta diseño de redes neuronales y planificación de rutas, demostrando ser efectivo en problemas de optimización en espacios de búsqueda complejos. Su simplicidad y eficacia lo convierten en una técnica de optimización ampliamente utilizada. \par
+
+Además, Wen-jie et al. (2021) presentan el Particle Swarm Optimization Algorithm with Random Weight (PSOA-RW), es una variante del algoritmo de optimización por enjambre de partículas (PSO), ya mencionado, que introduce aleatoriedad en el peso de las partículas para mejorar su capacidad de búsqueda y convergencia en problemas de optimización multiobjetivo. La inclusión de aleatoriedad en el peso puede ayudar al algoritmo a explorar de manera más eficaz diferentes regiones del espacio de búsqueda, lo que puede conllevar a una mayor diversidad de soluciones y, en última instancia, a una mejor capacidad para encontrar soluciones óptimas o cercanas a óptimas en problemas multiobjetivo. PSOA-RW se utiliza en la optimización multiobjetivo de redes de distribución activa, teniendo en cuenta aspectos económicos y medioambientales. Este algoritmo puede mejorar la capacidad de optimización global y la convergencia. Sin embargo, la escalabilidad y el tiempo de ejecución pueden ser desafíos en aplicaciones de gran envergadura. \par
+
+Por otro lado, W. Zheng et al. (2021) proponen un modelo de reconfiguración de redes de distribución (DR-DNR) desde una perspectiva de distribución en sistemas trifásicos desequilibrados. Este enfoque se adapta para hacer frente a la incertidumbre en la generación distribuida (GD) y las demandas de carga. El DR-DNR se divide en dos etapas: la primera se centra en el estado de los interruptores, mientras que la segunda maneja las variables de flujo de potencia óptimo (OPF). Esta técnica garantiza la confiabilidad y adaptabilidad del sistema, aunque su aplicación computacional puede requerir máquinas más potentes. \par
+
+Mientras que, en el influyente trabajo de M. E. Baran y F. F. Wu (1989) titulado "Network Reconfiguration in Distribution Systems for Loss Reduction and Load Balancing," se introduce una técnica fundamental en la gestión de sistemas de distribución eléctrica. La reconfiguración de redes eléctricas se centra en modificar las conexiones de líneas y dispositivos para reducir pérdidas de energía y equilibrar las cargas. Aunque esta técnica es esencial para mejorar la eficiencia y confiabilidad de las redes eléctricas, su implementación puede requerir sistemas de control y automatización avanzados. \par
+
+En cuanto a Borger (2014), presenta un modelo de Programación No Lineal Entera Mixta (MINLP) para abordar el problema de reconfiguración de sistemas de distribución eléctrica (EDS). En este enfoque, se utilizan dos técnicas de linealización para transformar el MINLP en un modelo de Programación Lineal Entera Mixta (MILP), lo que simplifica su resolución mediante software de optimización existente. Aunque este método logra representar con precisión el funcionamiento de EDS, es importante destacar que los tiempos de ejecución y la eficiencia computacional pueden ser áreas de mejora. \par
+
+Jabr (2013), por su parte, se concentra en diferentes formulaciones MILP para el problema de reconfiguración de EDS, empleando aproximaciones poliédricas y técnicas de linealización para abordar la elección de conductores. Los resultados indican que la incorporación de variables auxiliares puede facilitar la obtención de soluciones óptimas. La formulación preferida involucra representaciones más complejas de los conductores, junto con restricciones de árbol de expansión. Esta técnica resalta la importancia de adaptar las formulaciones para abordar problemas específicos y puede requerir el uso de máquinas de cálculo más potentes. \par
+
+También se encuentran trabajos como el de Carvajal et al. (2009) donde utiliza ACO (Optimización de Colonia de Hormigas), que forma parte de las técnicas metaheurísticas. El algoritmo ACO se inspira en el comportamiento real de las hormigas, que tienen la capacidad de encontrar la ruta más corta desde su colonia hasta una fuente de alimento. Esto se logra mediante la transmisión de información entre las hormigas a través de un rastro de feromona que dejan mientras se desplazan. Cuando una hormiga descubre una fuente de alimento y regresa a la colonia, sigue el rastro de feromona, tendiendo a elegir el camino con la concentración más alta de feromona. Es importante destacar que debido a la naturaleza del método, no se puede garantizar la búsqueda del óptimo global del problema en todo momento. Sin embargo, el algoritmo es capaz de encontrar soluciones de alta calidad. Además, el algoritmo propuesto se muestra robusto y rápido, lo que lo hace adecuado para su aplicación en sistemas del mundo real.
+
+\subsection{Comparación de enfoques existentes.}
+El problema de la reconfiguración de redes de distribución eléctrica es de gran relevancia en la ingeniería eléctrica actual y presenta desafíos significativos. A medida que los problemas en este campo crecen en complejidad, se hace necesario recurrir a enfoques de solución más avanzados. En situaciones de pequeña escala, como la programación lineal, pueden ser efectivos, pero en problemas más complejos, la utilización de métodos heurísticos, como el Binary Bat Algorithm (BBA) y su mejora, el Modified Binary Bat Algorithm (MBBA), se vuelve esencial debido al crecimiento exponencial del espacio de búsqueda. Estos algoritmos se destacan por su capacidad para abordar la reconfiguración de redes de distribución eléctrica y minimizar las pérdidas de potencia. Sin embargo, es importante señalar que la reconfiguración no necesariamente debe ser en tiempo real y puede aprovechar datos históricos. \par
+
+Por otro lado, el Modified Particle Swarm Optimization (MPSO) y el Particle Swarm Optimization Algorithm with Random Weight (PSOA-RW) son técnicas de optimización modernas que se aplican a la ubicación y el tamaño de baterías de condensadores y a la configuración de interruptores en sistemas de distribución eléctrica. Estos algoritmos, basados en el comportamiento de aves y peces en busca de comida, son eficaces para explorar el espacio de búsqueda y converger hacia soluciones de alta calidad. Sin embargo, la escalabilidad y el tiempo de ejecución pueden ser desafíos en aplicaciones de gran envergadura. \par
+
+Además, se ha propuesto un modelo de reconfiguración de redes de distribución (DR-DNR) que considera sistemas trifásicos desequilibrados y aborda la incertidumbre en la generación distribuida y la demanda de carga. Este enfoque se divide en dos etapas y garantiza la confiabilidad y adaptabilidad del sistema, aunque puede requerir una mayor capacidad de cómputo. \par
+
+Finalmente, en la literatura se encuentran formulaciones MILP (Programación Lineal Entera Mixta) para el problema de reconfiguración de redes de distribución eléctrica, que pueden utilizar aproximaciones poliédricas y técnicas de linealización para abordar la elección de conductores. Estas formulaciones pueden ser efectivas, pero pueden aumentar la complejidad y requerir sistemas de cómputo más potentes. \par
+
+En resumen, la reconfiguración de redes de distribución eléctrica es un desafío importante en la ingeniería eléctrica, y existen varias técnicas de optimización que pueden abordarlo. Cada enfoque tiene sus ventajas y desventajas, y su aplicabilidad puede variar según el problema específico y los recursos disponibles. El uso de técnicas modernas, como los algoritmos basados en enjambres y la programación lineal entera mixta, ha demostrado ser efectivo en la resolución de estos problemas, pero es importante considerar la escalabilidad y la eficiencia computacional en aplicaciones de gran envergadura.
+
+
+
+% ==================================================
+% SECCIÓN 8: BRECHAS Y OPORT. EN LA LITERATURA
+% ==================================================
+
+\section{Brechas y oportunidades en la literatura.}
+El problema de reconfiguración de la red de distribución eléctrica es un campo en constante evolución, y presenta diversas brechas y oportunidades para investigaciones futuras. Estas áreas de interés pueden servir como puntos de partida para avanzar en la comprensión y solución de los desafíos en este dominio crítico.
+Una de las brechas clave en la investigación actual es la eficiencia computacional de los algoritmos de reconfiguración. A medida que las redes de distribución eléctrica crecen en tamaño y complejidad, es necesario desarrollar algoritmos más eficientes que puedan manejar sistemas de gran escala en tiempo real. Reducir los tiempos de ejecución y mejorar la capacidad de procesamiento será esencial para abordar problemas más complejos. \par
+
+Otra oportunidad se encuentra en la optimización multiobjetivo. Aunque algunas técnicas ya consideran aspectos económicos y medioambientales, hay espacio para desarrollar métodos más avanzados que puedan abordar una gama más amplia de objetivos y restricciones, incluyendo la confiabilidad y la seguridad de la red. La gestión de la incertidumbre es un desafío en el contexto de la reconfiguración de la red. Con la creciente variabilidad de la generación distribuida y las demandas de carga, se necesita investigación en técnicas robustas que puedan adaptarse a condiciones cambiantes y garantizar la confiabilidad del suministro eléctrico. \par
+
+Por otro lado, la automatización y el control avanzado son elementos esenciales en la gestión de redes eléctricas modernas. Investigaciones futuras pueden centrarse en la integración efectiva de sistemas de control avanzado en el proceso de reconfiguración, permitiendo una implementación más eficiente de las soluciones. La creciente integración de energías renovables plantea desafíos específicos en la reconfiguración de la red. Investigaciones futuras pueden explorar cómo optimizar la reconfiguración teniendo en cuenta fuentes intermitentes de energía y la ubicación óptima de recursos renovables. \par
+
+Adicional, las redes eléctricas inteligentes son una tendencia emergente en la gestión de sistemas de distribución. La investigación puede abordar cómo la reconfiguración se integra en el contexto de las redes inteligentes, aprovechando la información en tiempo real y la comunicación avanzada. Finalmente, la validación empírica en entornos del mundo real es esencial. Implementar y evaluar soluciones de reconfiguración en sistemas de distribución eléctrica reales permitirá verificar la efectividad y la aplicabilidad de las técnicas propuestas.
+
+
+
+% ==================================================
+% SECCIÓN 7: REFERENCIAS
+% ==================================================
+
+\section*{Bibliografía y referencias.}
+\begin{enumerate}[label={[{\arabic*}]}]
+    \item \label{ref_1} Short, T. A. (2003). \textit{Electric Power Distribution Handbook}. Power Publishing.
+    \item \label{ref_2} Verma, E. P. (2016). \textit{Mesh Interconnection Network Definition, Advantages, Disadvantages}.\ YuvaYana. https://er.yuvayana.org/mesh-interconnection-network-definition-advantages\\disadvantages/
+    \item \label{ref_3} Borges, M. C. O., Franco, J. F., \& Rider, M. J. (2014). \textit{Optimal Reconfiguration of Electrical Distribution Systems Using Mathematical Programming}. Fecha de publicación: 28 de agosto de 2013. URL: https://github.com/tabarespozos/Flujo\_en\_redes\_202302/blob/main\\/Proyecto/2-Optimal\%20Reconfiguration%20of%20Electrical%20Distribution%20Systems%20Using%20Mathematical%20Programming.pdf.
+    \item \label{ref_4} Lavorato, M., Franco, J.F., Rider, M.J., \& Romero, R.A. (2012). Imposing Radiality Constraints in Distribution System Optimization Problems. IEEE Transactions on Power Systems, 27, 172-180.
+    \item \label{ref_5} Hernández Figueroa, J. (2013). Reconfiguración de redes eléctricas en sistemas de distribución de energía eléctrica utilizando Teoría de Grafos.
+    \item \label{ref_6} Mon, M.Y. (2014). Design and Calculation of 5 MVAR Shunt Capacitor Bank at 33 kV Bus in Distribution Substation.
+    \item \label{ref_7} Salau, A.O., Gebru, Y.W., \& Bitew, D. (2020). Optimal network reconfiguration for power loss minimization and voltage profile enhancement in distribution systems. Heliyon, 6.
+    \item Baran, M.E., \& Wu, F.F. (1989). Network Reconfiguration in Distribution Systems for Loss Reduction and Load Balancing. IEEE Power Engineering Review, 9, 101-102.
+    \item Gebru, Y., Aeggegn, D., Kefale, H., \& Gizaw, K. (2021). Performance enhancement of radial distribution system using simultaneous network reconfiguration and switched capacitor bank placement. Cogent Engineering, 8, 1897929. https://doi.org/10.1080/23311916.2021.1897929
+    \item Jabr, Rabih. (2013). Polyhedral Formulations and Loop Elimination Constraints for Distribution Network Expansion Planning. Power Systems, IEEE Transactions on. 28. 1888-1897. 10.1109/TPWRS.2012.2230652.
+    \item Mirjalili, S. M., \& Yang, X.-S. (2014). Binary bat algorithm. Neural Computing and Applications, 25(3–4), 663–681. https://doi.org/10.1007/s00521-013-1525-5
+    \item Quintero Durán, M, Candelo Becerra, J y Cabana Jiménez, K. (2019). Distribution network reconfiguration with large number of switches solved by a modified binary bat algorithm and improved seed population. Tehnicki vjesnik.
+    \item Shafik, M., Rashed, G., Chen, H., Elkadeem, M. R., \& Wang, S. (2019). Reconfiguration Strategy for Active Distribution Networks with Soft Open Points. En Proceedings of the 2019 6th International Conference on Industrial Engineering and Applications (pp. 330-334). IEEE. https://doi.org/10.1109/ICIEA.2019.8833865
+    \item Wen-jie, G., Litao, Y., Aoyang, H., \& Zhengjie, L. (2021). Optimal Dispatch Model of Active Distribution Network Based on Particle Swarm optimization Algorithm with Random Weight. 2021 IEEE 2nd International Conference on Big Data, Artificial Intelligence and Internet of Things Engineering (ICBAIE), 482-485.
+    \item Zheng, W., Huang, W., Hill, D. J., \& Hou, Y. (2021). An Adaptive Distributionally Robust Model for Three-Phase Distribution Network Reconfiguration. IEEE Transactions on Smart Grid, 12(2), 1224-1237. https://doi.org/10.1109/TSG.2020.3030299
+    \item Carvajal, S. X., López, J. M., \& Lemoine, C. A. (2009). Reconfiguración de sistemas de distribución de energía eléctrica usando un algoritmo de optimización basado en colonia de hormigas. Tecnura, 12(24), 14-22.
+\end{enumerate}
+
+
+% Sentencia de fin del documento.
+\end{document}
