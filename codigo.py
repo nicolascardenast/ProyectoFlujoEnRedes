@@ -1,25 +1,36 @@
 # -*- coding: utf-8 -*-
 
 ###############################################################################
-# Sección 1: Importaciones.
+# Sección 0: Importaciones.
 ###############################################################################
 
 # Para optimizar.
 import gurobipy as gp
 
+# Para leer los datos.
+import pandas as pd
+from io import StringIO
+
 # Para visualizar el grafo y la solución.
 import networkx as nx
 import matplotlib.pyplot as plt
 
-
+# Para calcular la demora computacional.
+import time
 
 
 ###############################################################################
-# Sección 2: Definición de los parámetros.
+# Sección 1: Definición de los parámetros.
 ###############################################################################
+
+# Guardar el tiempo de inicio.
+inicio = time.time()
 
 # Crear el grafo
 G = nx.Graph()
+
+# Cantidad de nodos.
+cantidad_nodos = 14
 
 # Definir los datos del sistema de 14 barras.
 nref = 14          # Nodo de referencia
@@ -33,115 +44,113 @@ vmax = 1.05        # Tensión máxima (pu)
 # Base de impedancia.
 zbase = 100
 
-# Definir la resistencia de los arcos.
+
+###############################################################################
+# Sección 2: lectura de datos.
+###############################################################################
+
+# La cadena de texto proporcionada
+cadena_texto = """14      13       7.50    10.00
+              13      12       8.00    11.00
+              13      11       9.00    18.00
+              11      10       4.00     4.00
+              14       9      11.00    11.00
+               9       8       8.00    11.00
+               9       7      11.00    11.00
+               8       6      11.00    11.00
+               8       5       8.00    11.00
+              14       4      11.00    11.00
+               4       3       9.00    12.00
+               4       2       8.00    11.00
+               2       1       4.00     4.00
+              12       6       4.00     4.00
+               7       3       4.00     4.00
+              10       1       9.00    12.00"""
+              
+# Leer la cadena de texto.
+cadena_data = StringIO(cadena_texto)
+df_data = pd.read_csv(cadena_data, delim_whitespace=True, header=None)
+
+# Crear diccionarios R y X.
+R = {}
+X = {}
+
+# Iterar a través de cada fila en el DataFrame.
+for index, row in df_data.iterrows():
+    # Extraer los valores de las columnas.
+    nodo_inicio = int(row[0])
+    nodo_fin = int(row[1])
+    valor_R = float(row[2])
+    valor_X = float(row[3])
+
+    # Crear las tuplas para usar como claves en los diccionarios.
+    clave_directa = (nodo_inicio, nodo_fin)
+    clave_inversa = (nodo_fin, nodo_inicio)
+
+    # Agregar las tuplas como claves en los diccionarios R y X.
+    R[clave_directa] = valor_R
+    R[clave_inversa] = valor_R  # También agregar la dirección inversa
+    
+    X[clave_directa] = valor_X
+    X[clave_inversa] = valor_X  # También agregar la dirección inversa
 
 
-R = { 	
-         (14,13):	7.50,
-	      (13,12):	8.00,
-	      (13,11):	9.00,
-	      (11,10):	4.00,
-	      (14,9):	11.00,
-	      (9,8):	8.00,
-	      (9,7):	11.00,
-	      (8,6):	11.00,
-	      (8,5):	8.00,
-	      (14,4):	11.00,
-	      (4,3):	9.00,
-	      (4,2):	8.00,
-	      (2,1):	4.00,
-	      (12,6):	4.00,
-	      (7,3):	4.00,
-	      (10,1):	9.00,
-            (13,14):	7.50,
-            (12,13):	8.00,
-            (11,13):	9.00,
-            (10,11):	4.00,
-            (9,14):	11.00,
-            (8,9):	8.00,
-            (7,9):	11.00,
-            (6,8):	11.00,
-            (5,8):	8.00,
-            (4,14):	11.00,
-            (3,4):	9.00,
-            (2,4):	8.00,
-            (1,2):	4.00,
-            (6,12):	4.00,
-            (3,7):	4.00,
-            (1,10):	9.00}
+# Guardar los datos en un string.
+data_str = """
+              14          0.0     0.0     0.0
+              13       2000.0  1600.0     0.0
+              12       3000.0  1500.0  1100.0
+              11       2000.0   800.0  1200.0
+              10       1500.0  1200.0     0.0
+               9       4000.0  2700.0     0.0
+               8       5000.0  3000.0  1200.0
+               7       1000.0   900.0     0.0
+               6        600.0   100.0   600.0
+               5       4500.0  2000.0  3700.0
+               4       1000.0   900.0     0.0
+               3       1000.0   700.0  1800.0
+               2       1000.0   900.0     0.0
+               1       2100.0  1000.0  1800.0
+"""
 
-# Definir la reactancia de los arcos.
-X = { (14,13): 10.00,
-      (13,12): 11.00,
-      (13,11): 18.00,
-      (11,10): 4.00,
-      (14,9): 11.00,
-      (9,8): 11.00,
-      (9,7): 11.00,
-      (8,6): 11.00,
-      (8,5): 11.00,
-      (14,4): 11.00,
-      (4,3): 12.00,
-      (4,2): 11.00,
-      (2,1): 4.00,
-      (12,6): 4.00,
-      (7,3): 4.00,
-      (10,1): 12.00,
-(	13	,	14	)	: 10.00	,
-(	12	,	13	)	: 11.00	,
-(	11	,	13	)	: 18.00	,
-(	10	,	11	)	: 4.00	,
-(	9	,	14	)	: 11.00	,
-(	8	,	9	)	: 11.00	,
-(	7	,	9	)	: 11.00	,
-(	6	,	8	)	: 11.00	,
-(	5	,	8	)	: 11.00	,
-(	4	,	14	)	: 11.00	,
-(	3	,	4	)	: 12.00	,
-(	2	,	4	)	: 11.00	,
-(	1	,	2	)	: 4.00	,
-(	6	,	12	)	: 4.00	,
-(	3	,	7	)	: 4.00	,
-(	1	,	10	)	: 12.00}
+# Leer la cadena.
+data = StringIO(data_str)
 
-# Definir las demandas de potencia activa y reactiva de cada nodo.
-barras = [
-    {14: [0.0, 0.0, 0.0]},
-    {13: [2000.0, 1600.0, 0.0]},
-    {12: [3000.0, 1500.0, 1100.0]},
-    {11: [2000.0, 800.0, 1200.0]},
-    {10: [1500.0, 1200.0, 0.0]},
-    {9: [4000.0, 2700.0, 0.0]},
-    {8: [5000.0, 3000.0, 1200.0]},
-    {7: [1000.0, 900.0, 0.0]},
-    {6: [600.0, 100.0, 600.0]},
-    {5: [4500.0, 2000.0, 3700.0]},
-    {4: [1000.0, 900.0, 0.0]},
-    {3: [1000.0, 700.0, 1800.0]},
-    {2: [1000.0, 900.0, 0.0]},
-    {1: [2100.0, 1000.0, 1800.0]}]
+# Lee los datos en un DataFrame.
+df = pd.read_csv(data, delim_whitespace=True, header=None)
+
+# Crea un diccionario para almacenar los valores.
+barras = {}
+
+# Itera a través de cada fila en el DataFrame.
+for index, row in df.iterrows():
+    # Extraer los valores de "barra", "pd", y "qd".
+    barra = int(row[0])
+    pd_value = row[1]
+    qd_value = row[2]
+    
+    # Crear una lista con los valores de pd y qd.
+    values_list = [pd_value, qd_value]
+    
+    # Agregar la lista de valores al diccionario con "barra" como clave.
+    barras[barra] = values_list
 
 
 ###############################################################################
-# Sección 2: Creación de las estructuras de datos.
+# Sección 3: Creación de las estructuras de datos.
 ###############################################################################
 
 # Definir el conjunto de nodos.
-Nodos = list(range(1, 15))
-
-# Definir el conjunto de arcos.
-#Arcos = [(i, j) for i in Nodos for j in Nodos]
+Nodos = list(range(1, cantidad_nodos + 1))
 
 # Definir le conjunto de períodos de tiempo.
 #T = range(1, 14)
 T=range(1,2)
 G.add_nodes_from(Nodos)
 
-for nodo in range(0,14):
-    atributos = barras[nodo][14-nodo]  # Obtén la lista de atributos [Pd, Qd, Qbc]
-    G.nodes[14-nodo]['Pd'] = atributos[0]  # Asigna Pd
-    G.nodes[14-nodo]['Qd'] = atributos[1]  # Asigna Qd
-    G.nodes[14-nodo]['Qbc'] = atributos[2]  # Asigna Qbc
+for nodo in range(0,cantidad_nodos):
+    G.nodes[cantidad_nodos-nodo]['Pd'] = barras[cantidad_nodos-nodo][0]  # Asigna Pd
+    G.nodes[cantidad_nodos-nodo]['Qd'] = barras[cantidad_nodos-nodo][1]  # Asigna Qd
 
 # Define los arcos y asigna características desde los diccionarios R y Reactancia
 for (arco, r), (arco, x) in zip(R.items(), X.items()):
@@ -150,6 +159,7 @@ for (arco, r), (arco, x) in zip(R.items(), X.items()):
 
 # Obtén todos los arcos del grafo G, considerando ambos sentidos
 Arcos = set(G.edges()).union(set([(arco[1], arco[0]) for arco in G.edges()]))
+
 
 ###############################################################################
 # Sección 4: Visualización del grafo.
@@ -169,8 +179,6 @@ plt.show()
 
 # Crear el modelo.
 model = gp.Model('RSDEE')
-
-
 
 # Variables de decisión: x[r, j] será 1 si el recurso 'r' es asignado al trabajo 'j', y 0 de lo contrario.
 P = model.addVars( Arcos, T, vtype=gp.GRB.CONTINUOUS, name="P") # flujo de potencia activa en el arco ij en el per´ıodo t
@@ -242,8 +250,6 @@ for t in T:
     for (i,j) in Arcos:
         model.addConstr(y[i,j,t] +y[j,i,t] <=1, name="arco unitario")
 
-
-
 # -----------------------------------------------------------------------------
 # Solución.
 # -----------------------------------------------------------------------------
@@ -267,4 +273,11 @@ if model.status == gp.GRB.OPTIMAL:
 else:
     print("No se encontró una solución óptima.")
 
+# Guardar el tiempo de finalización.
+fin = time.time()
 
+# Calcular el tiempo total en milisegundos y segundos.
+tiempo_total_milisegundos = (fin - inicio) * 1000
+tiempo_total_segundos = fin - inicio
+
+print(f"El procedimiento tomó {tiempo_total_milisegundos:.2f} milisegundos ({tiempo_total_segundos:.2f} segundos).")
