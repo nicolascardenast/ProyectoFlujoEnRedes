@@ -271,7 +271,7 @@ if model.status == gp.GRB.OPTIMAL:
             print(f"y[{i}, {j}, {t}] = {y[i, j, t].x}")
 
 else:
-    print("No se encontró una solución óptima.")
+    print("No se encontró una solución óptima.")    
 
 # Guardar el tiempo de finalización.
 fin = time.time()
@@ -281,3 +281,25 @@ tiempo_total_milisegundos = (fin - inicio) * 1000
 tiempo_total_segundos = fin - inicio
 
 print(f"El procedimiento tomó {tiempo_total_milisegundos:.2f} milisegundos ({tiempo_total_segundos:.2f} segundos).")
+
+
+###############################################################################
+# Sección 5: visualización de la solución.
+###############################################################################
+
+# Crear un grafo dirigido vacío.
+G_solution = nx.DiGraph()
+
+# Añadir los nodos al grafo.
+G_solution.add_nodes_from(Nodos)
+
+# Añadir las aristas que pertenecen a la solución.
+for (i, j, t) in y:
+    if y[i, j, t].x == 1:
+        G_solution.add_edge(i, j)
+
+# Dibujar el grafo.
+pos = nx.spring_layout(G_solution)
+nx.draw(G_solution, pos, with_labels=True, node_size=1000, node_color='lightgray',  width=2, font_size=15)
+plt.title("Grafo con Aristas de la Solución Óptima", size=20)
+plt.show()
