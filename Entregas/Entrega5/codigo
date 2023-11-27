@@ -4,7 +4,6 @@
 # Sección 0: Importaciones.
 ###############################################################################
 
-
 # Para optimizar.
 import gurobipy as gp
 
